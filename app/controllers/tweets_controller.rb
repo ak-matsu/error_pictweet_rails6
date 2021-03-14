@@ -11,6 +11,7 @@ class TweetsController < ApplicationController
   end
 
   def create
+    # binding.pry を行い、tweet_pramsを実行するとpermit内でtextが欠損していることが判明。
     Tweet.create(tweet_params)
   end
 
@@ -27,7 +28,7 @@ class TweetsController < ApplicationController
 
   def show
     @comment = Comment.new
-    @comments = @tweet.comment.includes(:user)
+    @comments = @tweet.comments.includes(:user)
   end
 
   def search
@@ -36,7 +37,8 @@ class TweetsController < ApplicationController
 
   private
   def tweet_params
-    params.require(:tweet).permit(:image, :test).merge(user_id: current_user.id)
+    # testからtextへ変更
+    params.require(:tweet).permit(:image, :text).merge(user_id: current_user.id)
   end
 
   def set_tweet
